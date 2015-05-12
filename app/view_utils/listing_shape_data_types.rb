@@ -13,6 +13,7 @@ module ListingShapeDataTypes
   }
 
   FORM_TRANSLATION = ->(h) {
+    return if h.nil?
     unless h.all? { |(k, v)| k.is_a?(String) && v.is_a?(String) }
       {code: :form_translation_hash_format, msg: "Value must be a hash of { locale => translations }" }
     end
@@ -20,8 +21,8 @@ module ListingShapeDataTypes
 
   Unit = EntityUtils.define_builder(
     [:type, :symbol, :mandatory],
-    [:name_tr_key, :string],
-    [:selector_tr_key, :string]
+    [:name, :hash, validate_with: FORM_TRANSLATION],
+    [:selector, :hash, validate_with: FORM_TRANSLATION]
   )
 
   # Shape datatype is ListingShapeController's internal representation of the listing shape.
@@ -38,5 +39,10 @@ module ListingShapeDataTypes
   KEY_MAP = {
     name_tr_key: :name,
     action_button_tr_key: :action_button_label
+  }
+
+  CUSTOM_UNIT_KEY_MAP = {
+    name_tr_key: :name,
+    selector_tr_key: :selector
   }
 end

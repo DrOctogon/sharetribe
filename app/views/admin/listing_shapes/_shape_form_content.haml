@@ -65,7 +65,7 @@
 - shape[:custom_units].map do |unit|
   .row
     .col-12
-      = unit[:label]
+      = unit[:label][@current_user.locale]
 
 .row
   .col-12.js-listing-shape-add-custom-unit-link
@@ -77,9 +77,9 @@
   - @current_community.locales.each do |locale|
     .row
       .custom-unit-label.col-2
-        = label_tag("custom_units[][label][#{locale}]", t("admin.communities.available_languages.#{locale}"))
+        = label_tag("custom_units[][name][#{locale}]", t("admin.communities.available_languages.#{locale}"))
       .custom-unit-label-text_field.col-10
-        = text_field_tag("custom_units[][label][#{locale}]", "", class: "required", disabled: true)
+        = text_field_tag("custom_units[][name][#{locale}]", "", class: "required", disabled: true)
   .input-header= t("admin.listing_shapes.custom_unit_form.selector_label_heading")
   - @current_community.locales.each do |locale|
     .row

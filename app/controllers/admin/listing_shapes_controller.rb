@@ -268,7 +268,7 @@ class Admin::ListingShapesController < ApplicationController
     def params_to_shape(params)
       form_params = HashUtils.symbolize_keys(params)
       parsed_params = form_params.merge(
-        units: parse_units(form_params[:units]),
+        units: parse_predefined_units(form_params[:units]).concat(parse_custom_units(form_params[:custom_units])),
         author_is_seller: form_params[:author_is_seller] == "false" ? false : true # default true
       )
 
@@ -296,11 +296,15 @@ class Admin::ListingShapesController < ApplicationController
     def expand_custom_units(shape_units)
       shape_units
         .select { |unit| unit[:type] == :custom }
-        .map { |unit| {type: unit[:type], label: I18n.t(unit[:name_tr_key])} }
+        .map { |unit| {type: unit[:type], label: unit[:name]} }
     end
 
-    def parse_units(selected_units)
+    def parse_predefined_units(selected_units)
       (selected_units || []).map { |type, _| {type: type.to_sym, enabled: true}}
+    end
+
+    def parse_custom_units(units)
+      (units || []).map { |unit| unit.merge(type: :custom, enabled: true)}
     end
   end
 end
