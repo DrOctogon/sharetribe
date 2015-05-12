@@ -279,21 +279,24 @@ class Admin::ListingShapesController < ApplicationController
       shape = Shape.call(shape)
 
       shape.merge(
-        units: expand_units(shape[:units]),
+        predefined_units: expand_predefined_units(shape[:units]),
+        custom_units: expand_custom_units(shape[:units])
       )
     end
 
     # private
 
-    # Take units from shape and add predefined units
-    def expand_units(shape_units)
+    def expand_predefined_units(shape_units)
       shape_units_set = shape_units.map { |t| t[:type] }.to_set
 
       ListingShapeHelper.predefined_unit_types
         .map { |t| {type: t, enabled: shape_units_set.include?(t), label: I18n.t("admin.listing_shapes.units.#{t}")} }
-        .concat(shape_units
-                 .select { |unit| unit[:type] == :custom }
-                 .map { |unit| {type: unit[:type], enabled: true, label: translate(unit[:translation_key])} }) # TODO Change translate
+    end
+
+    def expand_custom_units(shape_units)
+      shape_units
+        .select { |unit| unit[:type] == :custom }
+        .map { |unit| {type: unit[:type], label: I18n.t(unit[:name_tr_key])} }
     end
 
     def parse_units(selected_units)

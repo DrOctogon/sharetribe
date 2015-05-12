@@ -19,7 +19,9 @@ module ListingShapeDataTypes
   }
 
   Unit = EntityUtils.define_builder(
-    [:type, :symbol, :mandatory]
+    [:type, :symbol, :mandatory],
+    [:name_tr_key, :string],
+    [:selector_tr_key, :string]
   )
 
   # Shape datatype is ListingShapeController's internal representation of the listing shape.

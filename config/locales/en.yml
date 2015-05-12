@@ -396,6 +396,11 @@ en:
         night: "Per night"
         week: "Per week"
         month: "Per month"
+      add_custom_unit: "+ Add a custom pricing unit…"
+      custom_unit_form:
+        title: "New pricing unit"
+        label_heading: "Label"
+        selector_label_heading: "Selector label"
     paypal_accounts:
       marketplace_paypal_integration: "Payment preferences"
       preferences_updated: "Payment preferences updated"
